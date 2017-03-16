@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 //Add the White reference namespaces
-//**White's namespace has changed to 'TestStack.White'!**
+//================================================ White's namespace has changed to 'TestStack.White ===========================================================//
 using TestStack.White.Factory;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.InputDevices;
