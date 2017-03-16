@@ -15,6 +15,8 @@ using TestStack.White.Factory;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.InputDevices;
 
+//NB ADD OTHER USED AUTOMATION TOOLS HERE
+
 //Namespaces for getting the executable paths of the running processes
 using System.IO;
 
