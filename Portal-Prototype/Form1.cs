@@ -25,6 +25,9 @@ using TestAutoApp;
 
 //NB BUILD THIS APPLICATION FOR 64 BIT PLATFORMS TO AVOID CONFLICTS
 
+//NB FOR EDITING PLEASE CHANGE THE SAVE PATH FOR THE TEXT FILE ACCORDINGLY
+//USE SAVE FILE DIALOGUE BOX IN FUTURE TO LET THE USER CHOOSE THE PATH
+
 namespace Portal_Prototype
 {
     public partial class Form1 : Form
@@ -62,17 +65,26 @@ namespace Portal_Prototype
 
             //Read the text file one line at a time
             // Read the file and display it line by line.  
-            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Praneel\Documents\Visual Studio 2015\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
-
-            while ((line = file.ReadLine()) != null)
+            try
             {
-                //System.Console.WriteLine(line);
+                System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+                //NB THIS IS ONLY FOR TESTING. IN FUTURE LET THE USER CHOOSE THE SAVE FILE PATH
 
-                listBox1.Items.Add(line);
-                counter++;
+                while ((line = file.ReadLine()) != null)
+                {
+                    //System.Console.WriteLine(line);
+
+                    listBox1.Items.Add(line);
+                    counter++;
+                }
+
+                file.Close(); //close the file
             }
-
-            file.Close(); //close the file
+            catch(Exception)
+            {
+                lblListOfApps.Text = "No Previously Loaded Apps";
+            }
+             
         }
 
 
@@ -83,11 +95,11 @@ namespace Portal_Prototype
             int counter = 0;
 
             //Save the exe paths to a text file
-            System.IO.File.WriteAllLines(@"C:\Users\Praneel\Documents\Visual Studio 2015\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt", exePaths);
+            System.IO.File.WriteAllLines(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt", exePaths);
             MessageBox.Show("Apps Saved!!");
 
             //Since the text file gets rid of duplicates use it to create our AutoApp objects
-            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Praneel\Documents\Visual Studio 2015\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
 
         }
 
