@@ -40,8 +40,7 @@ namespace Portal_Prototype
         //Strings to hold the selected folder and file paths for the text file
         
         string sSelectedFolder;
-        static string holdPath;
-
+   
         public string GetProcessPath(string name)
         {
             Process[] processes = Process.GetProcessesByName(name);
@@ -107,9 +106,7 @@ namespace Portal_Prototype
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string line = "";
-            int counter = 0;
-
+         
             try
             {
                 if(txtFilePath.Text != "")
@@ -198,14 +195,11 @@ namespace Portal_Prototype
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Hold the values from the previous sesssion
-            holdPath = sSelectedFolder;
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Hold the values from the previous sesssion
-            holdPath = sSelectedFolder;
 
             //Save Form Settings
             Properties.Settings.Default.Save();
