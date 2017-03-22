@@ -118,7 +118,16 @@ namespace Portal_Prototype
 
                     //Since the text file gets rid of duplicates use it to create our AutoApp objects
                     //System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+
                     System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"\exePaths.txt");
+
+                    //Close the Stream Reader asset
+                    file.Close();
+
+                    //***********************************************************************************************************//
+                    //********************Try to elegantly close the apps here!!************************************************//
+                    /************************************************************************************************************/
+
                 }
                 else
                 {
@@ -128,7 +137,7 @@ namespace Portal_Prototype
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + "Please choose a save path first!");
+                MessageBox.Show(ex.Message + "\n" + "Please choose a save path first! You may not save twice in one session!");
             }
 
 
@@ -163,6 +172,8 @@ namespace Portal_Prototype
                         //Clear the list of duplicates ====figure out how to eliminate duplicates
                         //var paths = exePaths.Distinct();
 
+                       
+                   
                         //Display the list of open apps in the list box
                         foreach (string path in exePaths)
                         {
@@ -175,6 +186,8 @@ namespace Portal_Prototype
                         //Console.WriteLine("n/a");
                         listBox1.Items.Add("N/A");
                     }
+
+                    RemoveDuplicates();
 
                 }
             }
@@ -203,6 +216,27 @@ namespace Portal_Prototype
 
             //Save Form Settings
             Properties.Settings.Default.Save();
+        }
+
+        private void RemoveDuplicates()
+        {
+            for (int Row = 0; Row <= listBox1.Items.Count - 2; Row++)
+            {
+                for (int RowAgain = listBox1.Items.Count - 1; RowAgain >= Row + 1; RowAgain += -1)
+                {
+                    if (listBox1.Items[Row].ToString() == listBox1.Items[RowAgain].ToString())
+                    {
+                        listBox1.Items.RemoveAt(RowAgain);
+                    }
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //******************RESTORE APPS HERE*************************//
+            //====First attempt to open each app, then the associated file / browser page that was opened within that app==//
+            //=============================================================================================================//
         }
     }
 }
