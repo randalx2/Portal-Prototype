@@ -1,6 +1,6 @@
 C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE
-C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe
 C:\Windows\system32\notepad.exe
 C:\Program Files (x86)\Microsoft Office\Root\Office16\WINWORD.EXE
 C:\Program Files (x86)\Mozilla Firefox\firefox.exe

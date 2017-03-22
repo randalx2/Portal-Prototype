@@ -36,7 +36,12 @@ namespace Portal_Prototype
         //string path = "";
         List<string> exePaths = new List<string>();  // List vector to store exe path
         List<AutoApp> myApps = new List<AutoApp>();  //List of automation app objects
+
+        //Strings to hold the selected folder and file paths for the text file
         
+        string sSelectedFolder;
+        static string holdPath;
+
         public string GetProcessPath(string name)
         {
             Process[] processes = Process.GetProcessesByName(name);
@@ -56,6 +61,8 @@ namespace Portal_Prototype
             InitializeComponent();
         }
 
+        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             string line = "";
@@ -67,8 +74,15 @@ namespace Portal_Prototype
             // Read the file and display it line by line.  
             try
             {
-                System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+                //System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
                 //NB THIS IS ONLY FOR TESTING. IN FUTURE LET THE USER CHOOSE THE SAVE FILE PATH
+
+                //System.IO.StreamReader file = new System.IO.StreamReader(@sSelectedFolder + @"\exePaths.txt");
+
+                //NB THE Text box's property is bound to the app settings and saved on the closed event
+                //Therefore we can use its property to reload the previous path
+
+                System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"exePaths.txt");
 
                 while ((line = file.ReadLine()) != null)
                 {
@@ -89,24 +103,48 @@ namespace Portal_Prototype
 
 
 
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             string line = "";
             int counter = 0;
 
-            //Save the exe paths to a text file
-            System.IO.File.WriteAllLines(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt", exePaths);
-            MessageBox.Show("Apps Saved!!");
+            try
+            {
+                if(txtFilePath.Text != "")
+                {
+                    //Save the exe paths to a text file
+                    //System.IO.File.WriteAllLines(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt", exePaths);
+                    System.IO.File.WriteAllLines(@txtFilePath.Text + @"\exePaths.txt", exePaths);
+                    MessageBox.Show("Apps Saved!!");
 
-            //Since the text file gets rid of duplicates use it to create our AutoApp objects
-            System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+                    //Since the text file gets rid of duplicates use it to create our AutoApp objects
+                    //System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
+                    System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"\exePaths.txt");
+                }
+                else
+                {
+                    MessageBox.Show("The file path does not exist or the file may have been moved to another location");
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + "Please choose a save path first!");
+            }
+
+
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            listBox1.Items.Clear();  //Clear the previous items on the form list
+            exePaths.Clear();        //Clear the previous items on the paths list object
+
             lblListOfApps.Text = "Apps Currently Opened";
-            listBox1.Items.Clear();  //Clear the previous items
+            
 
             Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
 
@@ -143,6 +181,34 @@ namespace Portal_Prototype
 
                 }
             }
+        }
+
+        private void btnFilePath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            //fbd.Description = "Custom Description"; //not mandatory
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+                sSelectedFolder = fbd.SelectedPath;
+            else
+                sSelectedFolder = string.Empty;
+
+            txtFilePath.Text = sSelectedFolder;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Hold the values from the previous sesssion
+            holdPath = sSelectedFolder;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //Hold the values from the previous sesssion
+            holdPath = sSelectedFolder;
+
+            //Save Form Settings
+            Properties.Settings.Default.Save();
         }
     }
 }
