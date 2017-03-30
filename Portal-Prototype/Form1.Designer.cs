@@ -36,6 +36,9 @@
             this.btnFilePath = new System.Windows.Forms.Button();
             this.lblFilePath = new System.Windows.Forms.Label();
             this.txtFilePath = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.lblAppsClose = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblListOfApps
@@ -57,7 +60,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(383, 394);
+            this.button1.Location = new System.Drawing.Point(534, 404);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(154, 43);
             this.button1.TabIndex = 2;
@@ -67,7 +70,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(726, 394);
+            this.button2.Location = new System.Drawing.Point(1005, 404);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(154, 43);
             this.button2.TabIndex = 3;
@@ -77,7 +80,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(13, 394);
+            this.button3.Location = new System.Drawing.Point(292, 404);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(154, 43);
             this.button3.TabIndex = 4;
@@ -114,11 +117,40 @@
             this.txtFilePath.TabIndex = 7;
             this.txtFilePath.Text = global::Portal_Prototype.Properties.Settings.Default.holdpath;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(772, 404);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(154, 43);
+            this.button4.TabIndex = 8;
+            this.button4.Text = "CLOSE ALL APPS";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(911, 34);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(514, 329);
+            this.listBox2.TabIndex = 9;
+            // 
+            // lblAppsClose
+            // 
+            this.lblAppsClose.AutoSize = true;
+            this.lblAppsClose.Location = new System.Drawing.Point(908, 9);
+            this.lblAppsClose.Name = "lblAppsClose";
+            this.lblAppsClose.Size = new System.Drawing.Size(0, 13);
+            this.lblAppsClose.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(891, 485);
+            this.ClientSize = new System.Drawing.Size(1450, 485);
+            this.Controls.Add(this.lblAppsClose);
+            this.Controls.Add(this.listBox2);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.txtFilePath);
             this.Controls.Add(this.lblFilePath);
             this.Controls.Add(this.btnFilePath);
@@ -147,6 +179,9 @@
         private System.Windows.Forms.Button btnFilePath;
         private System.Windows.Forms.Label lblFilePath;
         private System.Windows.Forms.TextBox txtFilePath;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Label lblAppsClose;
     }
 }
 

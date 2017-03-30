@@ -34,11 +34,13 @@ namespace Portal_Prototype
     {
         //Globals
         //string path = "";
-        List<string> exePaths = new List<string>();  // List vector to store exe path
-        List<AutoApp> myApps = new List<AutoApp>();  //List of automation app objects
+        List<string> exePaths = new List<string>();  // List vector to store exe paths
+        List<string> appNames = new List<string>();
 
-        //Strings to hold the selected folder and file paths for the text file
-        
+        //TestStack.White Objects
+        TestStack.White.Application _application;
+        TestStack.White.UIItems.WindowItems.Window _mainWindow;
+
         string sSelectedFolder;
    
         public string GetProcessPath(string name)
@@ -60,17 +62,33 @@ namespace Portal_Prototype
             InitializeComponent();
         }
 
-        
+        private void RemoveDuplicates(ListBox lb)
+        {
+            //method to remove duplicates from a list
+
+            for (int Row = 0; Row <= lb.Items.Count - 2; Row++)
+            {
+                for (int RowAgain = lb.Items.Count - 1; RowAgain >= Row + 1; RowAgain += -1)
+                {
+                    if (lb.Items[Row].ToString() == lb.Items[RowAgain].ToString())
+                    {
+                        lb.Items.RemoveAt(RowAgain);
+                    }
+                }
+            }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             string line = "";
             int counter = 0;
+
             //Upon Form load show previously loaded applications
             lblListOfApps.Text = "Previously Loaded Apps";
 
             //Read the text file one line at a time
             // Read the file and display it line by line.  
+
             try
             {
                 //System.IO.StreamReader file = new System.IO.StreamReader(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt");
@@ -81,7 +99,7 @@ namespace Portal_Prototype
                 //NB THE Text box's property is bound to the app settings and saved on the closed event
                 //Therefore we can use its property to reload the previous path
 
-                System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"exePaths.txt");
+                System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"\exePaths.txt");
 
                 while ((line = file.ReadLine()) != null)
                 {
@@ -113,6 +131,7 @@ namespace Portal_Prototype
                 {
                     //Save the exe paths to a text file
                     //System.IO.File.WriteAllLines(@"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\exePaths.txt", exePaths);
+
                     System.IO.File.WriteAllLines(@txtFilePath.Text + @"\exePaths.txt", exePaths);
                     MessageBox.Show("Apps Saved!!");
 
@@ -167,6 +186,7 @@ namespace Portal_Prototype
                         //Console.WriteLine("Process Path: " + process.MainModule.FileName);
 
                         //Store the executable paths in a list
+
                         exePaths.Add(@process.MainModule.FileName);
 
                         //Clear the list of duplicates ====figure out how to eliminate duplicates
@@ -181,16 +201,16 @@ namespace Portal_Prototype
                             //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         //Console.WriteLine("n/a");
                         listBox1.Items.Add("N/A");
                     }
 
-                    RemoveDuplicates();
-
                 }
             }
+
+            RemoveDuplicates(listBox1);
         }
 
         private void btnFilePath_Click(object sender, EventArgs e)
@@ -218,25 +238,99 @@ namespace Portal_Prototype
             Properties.Settings.Default.Save();
         }
 
-        private void RemoveDuplicates()
-        {
-            for (int Row = 0; Row <= listBox1.Items.Count - 2; Row++)
-            {
-                for (int RowAgain = listBox1.Items.Count - 1; RowAgain >= Row + 1; RowAgain += -1)
-                {
-                    if (listBox1.Items[Row].ToString() == listBox1.Items[RowAgain].ToString())
-                    {
-                        listBox1.Items.RemoveAt(RowAgain);
-                    }
-                }
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             //******************RESTORE APPS HERE*************************//
             //====First attempt to open each app, then the associated file / browser page that was opened within that app==//
             //=============================================================================================================//
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //******************CLOSE ALL APPS HERE*************************//
+            //===Use the AutoApp Object to close all open apps================//
+            //=============================================================================================================//
+            //NB CLOSE ALL APPS BESIDES Portal-Protype.exe itself
+
+            //Create AutoApp Object
+           // AutoApp myAutoApp = new AutoApp();
+
+           /****Try not to use the AutoApp class just yet. Use TestStack Manually as AutoApp is still under development***********/
+
+            listBox2.Items.Clear();  //Clear the previous items on the form list
+            appNames.Clear();        //Clear the previous items on the names list object
+
+            lblAppsClose.Text = "Closing these Applications";
+
+            Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
+
+            foreach (Process process in processlist)
+            {
+                if (!String.IsNullOrEmpty(process.MainWindowTitle)) //only check for the ones with open windows
+                {
+                    //Console.WriteLine("Process: {0} ID: {1} Window title: {2}", process.ProcessName, process.Id, process.MainWindowTitle);
+
+                    try
+                    {
+                        //Console.WriteLine("Process Path: " + process.MainModule.FileName);
+
+                        //Store the executable paths in a list
+
+                        appNames.Add(@process.MainWindowTitle);
+
+                        //Display the list of open apps in the list box
+                        foreach (string name in appNames)
+                        {
+                            listBox2.Items.Add(name);
+                            //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("n/a");
+                        listBox2.Items.Add("N/A");
+                    }
+
+                  
+
+                }
+            }
+
+            RemoveDuplicates(listBox2);
+
+            //Iterate through listbox2 and close the apps using TestStack
+
+            //Assuming the paths in listbox1 refer to the names in listbox2
+
+            foreach (string path in listBox1.Items)
+            {
+                foreach(string name in listBox2.Items)
+                {
+                    try
+                    {
+                        //Attach the current apps / windows to TestStack.White
+                        //var psi = new ProcessStartInfo(path);
+                        
+                        //try just using Attach instead
+                        _application = TestStack.White.Application.AttachOrLaunch(psi);
+                        _mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache);
+
+                        if(_mainWindow.Title != "Form1" || _mainWindow.Title != "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")
+                        {
+                            //Dispose the main window
+                            _mainWindow.Dispose();
+
+                            //Dispose the application
+                            _application.Dispose();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + " \n Unable to close app: " + name);
+                    }                 
+                }
+            } 
         }
     }
 }

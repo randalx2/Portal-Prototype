@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using System.Diagnostics;
 
@@ -18,6 +19,7 @@ namespace TestAutoApp
     class AutoApp
     {
         private string exeSourceFile; //String to hold the path to the program's exe
+        private string appName;
         private TestStack.White.Application _application;  //TestStack.White application object
         private TestStack.White.UIItems.WindowItems.Window _mainWindow;  //TestStack.White main window object
 
@@ -47,6 +49,7 @@ namespace TestAutoApp
         public AutoApp()
         {
             exeSourceFile = "";
+            appName = "";
             _application = null;   //This is set by the start method
             _mainWindow = null;     //This is set by the start method
         }
@@ -57,11 +60,22 @@ namespace TestAutoApp
             exeSourceFile = iexeSourceFile;
         }
 
-        public void startApp(string appName)
+        public void startApp(string iappName)
         {
             try
             {
-                var psi = new ProcessStartInfo(exeSourceFile);
+                //Get the appname
+                if (iappName != "")
+                {
+                    appName = iappName;
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect App Name");
+                }
+
+                    var psi = new ProcessStartInfo(exeSourceFile);
+
                 // launch the process through white application
                 _application = TestStack.White.Application.AttachOrLaunch(psi);
 
@@ -69,9 +83,9 @@ namespace TestAutoApp
                 _mainWindow = _application.GetWindow(SearchCriteria.ByText(appName), InitializeOption.NoCache);
 
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                throw;
+                MessageBox.Show(ex.Message + " \n Failed to start App. App name may not be set!");
             }
         }
 
@@ -85,9 +99,9 @@ namespace TestAutoApp
                 //Dispose the application
                 _application.Dispose();
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                throw;
+                MessageBox.Show(ex.Message + " \n Unable to close app: " + appName);
             }
         }
 
