@@ -275,7 +275,7 @@ namespace Portal_Prototype
         {
             //******************CLOSE ALL APPS HERE*************************//
             //===Use the AutoApp Object to close all open apps================//
-            //=============================================================================================================//
+            //==============================================================================================================//
             int counter = 0;
             string name = "";
             try
@@ -289,7 +289,10 @@ namespace Portal_Prototype
                     //_mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache);
                     ++counter;
 
-                    if (name == "Form1" || id == 5436)
+                    //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
+                    //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
+
+                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio")
                     {
                         continue;
                     }
