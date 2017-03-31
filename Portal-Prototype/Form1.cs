@@ -36,6 +36,7 @@ namespace Portal_Prototype
         //string path = "";
         List<string> exePaths = new List<string>();  // List vector to store exe paths
         List<string> appNames = new List<string>();
+        List<int> appIDs = new List<int>();  //Hold the app IDs
 
         //TestStack.White Objects
         TestStack.White.Application _application;
@@ -85,6 +86,7 @@ namespace Portal_Prototype
 
             //Upon Form load show previously loaded applications
             lblListOfApps.Text = "Previously Loaded Apps";
+            lblAppsClose.Text = "Current Application Names";
 
             //Read the text file one line at a time
             // Read the file and display it line by line.  
@@ -166,10 +168,15 @@ namespace Portal_Prototype
         private void button3_Click(object sender, EventArgs e)
         {
             listBox1.Items.Clear();  //Clear the previous items on the form list
+            listBox2.Items.Clear();
+            listBox3.Items.Clear();
+
             exePaths.Clear();        //Clear the previous items on the paths list object
+            appNames.Clear();
+            appIDs.Clear();
 
             lblListOfApps.Text = "Apps Currently Opened";
-            
+
 
             Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
 
@@ -188,29 +195,47 @@ namespace Portal_Prototype
                         //Store the executable paths in a list
 
                         exePaths.Add(@process.MainModule.FileName);
+                        //appNames.Add(process.ProcessName);
+                        appNames.Add(process.MainWindowTitle);
+                        appIDs.Add(process.Id);
 
                         //Clear the list of duplicates ====figure out how to eliminate duplicates
                         //var paths = exePaths.Distinct();
 
-                       
-                   
+
+
                         //Display the list of open apps in the list box
                         foreach (string path in exePaths)
                         {
                             listBox1.Items.Add(path);
                             //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
                         }
+
+                        foreach (int id in appIDs)
+                        {
+                            listBox3.Items.Add(id);
+                        }
+
+                        foreach (string name in appNames)
+                        {
+                            listBox2.Items.Add(name);
+                        }
                     }
                     catch (Exception ex)
                     {
                         //Console.WriteLine("n/a");
                         listBox1.Items.Add("N/A");
+                        listBox3.Items.Add("N/A");
+                        listBox2.Items.Add("N/A");
+                        MessageBox.Show(ex.Message + "\n No Such App or process ID opened");
                     }
 
                 }
             }
 
             RemoveDuplicates(listBox1);
+            RemoveDuplicates(listBox2);
+            RemoveDuplicates(listBox3);
         }
 
         private void btnFilePath_Click(object sender, EventArgs e)
@@ -251,86 +276,15 @@ namespace Portal_Prototype
             //******************CLOSE ALL APPS HERE*************************//
             //===Use the AutoApp Object to close all open apps================//
             //=============================================================================================================//
-            //NB CLOSE ALL APPS BESIDES Portal-Protype.exe itself
-
-            //Create AutoApp Object
-           // AutoApp myAutoApp = new AutoApp();
-
-           /****Try not to use the AutoApp class just yet. Use TestStack Manually as AutoApp is still under development***********/
-
-            listBox2.Items.Clear();  //Clear the previous items on the form list
-            appNames.Clear();        //Clear the previous items on the names list object
-
-            lblAppsClose.Text = "Closing these Applications";
-
-            Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
-
-            foreach (Process process in processlist)
+            
+            foreach(string name in listBox2.Items)
             {
-                if (!String.IsNullOrEmpty(process.MainWindowTitle)) //only check for the ones with open windows
+               foreach(int id in listBox3.Items)
                 {
-                    //Console.WriteLine("Process: {0} ID: {1} Window title: {2}", process.ProcessName, process.Id, process.MainWindowTitle);
-
-                    try
-                    {
-                        //Console.WriteLine("Process Path: " + process.MainModule.FileName);
-
-                        //Store the executable paths in a list
-
-                        appNames.Add(@process.MainWindowTitle);
-
-                        //Display the list of open apps in the list box
-                        foreach (string name in appNames)
-                        {
-                            listBox2.Items.Add(name);
-                            //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //Console.WriteLine("n/a");
-                        listBox2.Items.Add("N/A");
-                    }
-
-                  
-
+                    MessageBox.Show("Window Name: " + name + "  Application Auto ID: " + id);
                 }
             }
-
-            RemoveDuplicates(listBox2);
-
-            //Iterate through listbox2 and close the apps using TestStack
-
-            //Assuming the paths in listbox1 refer to the names in listbox2
-
-            foreach (string path in listBox1.Items)
-            {
-                foreach(string name in listBox2.Items)
-                {
-                    try
-                    {
-                        //Attach the current apps / windows to TestStack.White
-                        //var psi = new ProcessStartInfo(path);
-                        
-                        //try just using Attach instead
-                        _application = TestStack.White.Application.AttachOrLaunch(psi);
-                        _mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache);
-
-                        if(_mainWindow.Title != "Form1" || _mainWindow.Title != "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")
-                        {
-                            //Dispose the main window
-                            _mainWindow.Dispose();
-
-                            //Dispose the application
-                            _application.Dispose();
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + " \n Unable to close app: " + name);
-                    }                 
-                }
-            } 
+           
         }
     }
 }

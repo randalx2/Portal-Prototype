@@ -39,6 +39,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.lblAppsClose = new System.Windows.Forms.Label();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.lblProcID = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblListOfApps
@@ -55,7 +57,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(15, 34);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(864, 238);
+            this.listBox1.Size = new System.Drawing.Size(662, 264);
             this.listBox1.TabIndex = 1;
             // 
             // button1
@@ -130,9 +132,9 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(911, 34);
+            this.listBox2.Location = new System.Drawing.Point(706, 34);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(514, 329);
+            this.listBox2.Size = new System.Drawing.Size(514, 264);
             this.listBox2.TabIndex = 9;
             // 
             // lblAppsClose
@@ -143,11 +145,30 @@
             this.lblAppsClose.Size = new System.Drawing.Size(0, 13);
             this.lblAppsClose.TabIndex = 10;
             // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(1245, 34);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(175, 264);
+            this.listBox3.TabIndex = 11;
+            // 
+            // lblProcID
+            // 
+            this.lblProcID.AutoSize = true;
+            this.lblProcID.Location = new System.Drawing.Point(1242, 9);
+            this.lblProcID.Name = "lblProcID";
+            this.lblProcID.Size = new System.Drawing.Size(156, 13);
+            this.lblProcID.TabIndex = 12;
+            this.lblProcID.Text = "Current Application Process IDs";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 485);
+            this.Controls.Add(this.lblProcID);
+            this.Controls.Add(this.listBox3);
             this.Controls.Add(this.lblAppsClose);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.button4);
@@ -182,6 +203,8 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label lblAppsClose;
+        private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.Label lblProcID;
     }
 }
 
