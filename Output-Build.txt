@@ -1,5 +1,1 @@
-﻿1>------ Build started: Project: Portal-Prototype, Configuration: Debug Any CPU ------
-1>C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\Form1.cs(105,20,105,24): warning CS0219: The variable 'line' is assigned but its value is never used
-1>C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\Form1.cs(106,17,106,24): warning CS0219: The variable 'counter' is assigned but its value is never used
-1>  Portal-Prototype -> C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe
-========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+﻿

@@ -276,15 +276,36 @@ namespace Portal_Prototype
             //******************CLOSE ALL APPS HERE*************************//
             //===Use the AutoApp Object to close all open apps================//
             //=============================================================================================================//
-            
-            foreach(string name in listBox2.Items)
+            int counter = 0;
+            string name = "";
+            try
             {
-               foreach(int id in listBox3.Items)
+                foreach (int id in listBox3.Items)
                 {
-                    MessageBox.Show("Window Name: " + name + "  Application Auto ID: " + id);
+                    name = listBox2.Items[counter].ToString();
+                    //MessageBox.Show("ID: " + id + "\n Window Name: " + name);
+
+                    _application = TestStack.White.Application.Attach(id);
+                    //_mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache);
+                    ++counter;
+
+                    if (name == "Form1" || id == 5436)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        _application.Dispose();
+                    }
+                    
                 }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
            
+
         }
     }
 }
