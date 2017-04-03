@@ -28,6 +28,16 @@ using TestAutoApp;
 //NB FOR EDITING PLEASE CHANGE THE SAVE PATH FOR THE TEXT FILE ACCORDINGLY
 //USE SAVE FILE DIALOGUE BOX IN FUTURE TO LET THE USER CHOOSE THE PATH
 
+//Add in the Selenium namespaces after installing from Nuget
+//Selenium Namespaces
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.IE;
+
+//Special Support Classes for Selenium from Selenium.support package
+using OpenQA.Selenium.Support.UI;
+
 namespace Portal_Prototype
 {
     public partial class Form1 : Form
@@ -40,7 +50,8 @@ namespace Portal_Prototype
 
         //TestStack.White Objects
         TestStack.White.Application _application;
-        TestStack.White.UIItems.WindowItems.Window _mainWindow;
+
+        //TestStack.White.UIItems.WindowItems.Window _mainWindow;
 
         string sSelectedFolder;
    
@@ -265,9 +276,111 @@ namespace Portal_Prototype
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //Clear the listboxes and reset the list objects
+            listBox1.Items.Clear();  //Clear the previous items on the form list
+            listBox2.Items.Clear();
+            listBox3.Items.Clear();
+
+            exePaths.Clear();        //Clear the previous items on the paths list object
+            appNames.Clear();
+            appIDs.Clear();
+
+            lblListOfApps.Text = "Apps Currently Opened";
+
+
+            Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
+
             //******************RESTORE APPS HERE*************************//
             //====First attempt to open each app, then the associated file / browser page that was opened within that app==//
             //=============================================================================================================//
+
+            //Read the text file line by line to get previous stored paths
+            int counter = 0;
+            string line = "";
+
+            // Read the file and display it line by line.
+            //Thereafter launch each of the previously used apps through TestStack.White
+            //NB Alter this later to let selenium open up the browsers
+            //NB Don't open up another instance of Portal itself as the user is expected to launch Portal Himself
+            //NB Another instance of Visual Studio will be opened up as Portal is run from its environment during this phase
+            //==> Opening up another instance of visual studio may not be suitable during the debugging phase
+            //Also the launch directory of Portal will change once it is installed on PC
+
+            System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"\exePaths.txt");
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line == @"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe")
+                {
+                    //Just increment the loop counter here as we don't want to open up another instance of Portal
+                    counter++;
+                }
+                else
+                {
+                    //Console.WriteLine(line);
+                    _application = TestStack.White.Application.Launch(line);
+                    counter++;
+                }
+                
+            }
+
+            //Restore the listboxes accordingly
+            foreach (Process process in processlist)
+            {
+                if (!String.IsNullOrEmpty(process.MainWindowTitle)) //only check for the ones with open windows
+                {
+                    //Console.WriteLine("Process: {0} ID: {1} Window title: {2}", process.ProcessName, process.Id, process.MainWindowTitle);
+
+                    try
+                    {
+                        //Console.WriteLine("Process Path: " + process.MainModule.FileName);
+
+                        //Store the executable paths in a list
+
+                        exePaths.Add(@process.MainModule.FileName);
+                        //appNames.Add(process.ProcessName);
+                        appNames.Add(process.MainWindowTitle);
+                        appIDs.Add(process.Id);
+
+                        //Clear the list of duplicates ====figure out how to eliminate duplicates
+                        //var paths = exePaths.Distinct();
+
+
+
+                        //Display the list of open apps in the list box
+                        foreach (string path in exePaths)
+                        {
+                            listBox1.Items.Add(path);
+                            //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
+                        }
+
+                        foreach (int id in appIDs)
+                        {
+                            listBox3.Items.Add(id);
+                        }
+
+                        foreach (string name in appNames)
+                        {
+                            listBox2.Items.Add(name);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("n/a");
+                        listBox1.Items.Add("N/A");
+                        listBox3.Items.Add("N/A");
+                        listBox2.Items.Add("N/A");
+                        MessageBox.Show(ex.Message + "\n No Such App or process ID opened");
+                    }
+
+                }
+            }
+
+            RemoveDuplicates(listBox1);
+            RemoveDuplicates(listBox2);
+            RemoveDuplicates(listBox3);
+
+            //Release the File Resource Asset
+            file.Close();
 
         }
 
@@ -275,6 +388,7 @@ namespace Portal_Prototype
         {
             //******************CLOSE ALL APPS HERE*************************//
             //===Use the AutoApp Object to close all open apps================//
+            //===== NB Using TestStack to shut down browsers causes them to give a crash error message upon starting again ie they weren't closed properly======//
             //==============================================================================================================//
             int counter = 0;
             string name = "";
@@ -300,6 +414,7 @@ namespace Portal_Prototype
                     else
                     {
                         //Enter saving application specific info here before closing instances of the app
+                        //Also check if any browsers where open and try using Selenium instead to close them.
 
                         _application.Dispose();
                     }
@@ -310,8 +425,12 @@ namespace Portal_Prototype
             {
                 MessageBox.Show(ex.Message);
             }
-           
 
+            //Clear the listboxes
+            //NB Abstraction ==>  This is irrelevant to the user but clear the list once this button is pressed
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+            listBox3.Items.Clear();     
         }
     }
 }

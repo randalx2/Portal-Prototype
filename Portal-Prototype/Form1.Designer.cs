@@ -76,7 +76,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(154, 43);
             this.button2.TabIndex = 3;
-            this.button2.Text = "RESTORE APPS";
+            this.button2.Text = "RESTORE PREVIOUS SESSION";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
