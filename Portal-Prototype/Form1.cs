@@ -459,7 +459,7 @@ namespace Portal_Prototype
                     //MessageBox.Show("ID: " + id + "\n Window Name: " + name);
 
                     _application = TestStack.White.Application.Attach(id);
-                    _mainWindow = _application.GetWindow(SearchCriteria.ByText(windowTitle), InitializeOption.NoCache);
+                    //_mainWindow = _application.GetWindow(SearchCriteria.ByText(windowTitle), InitializeOption.NoCache);
                     
                     //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
                     //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
@@ -480,7 +480,7 @@ namespace Portal_Prototype
 
                         //To safely close an app try closing the window first
 
-                        _mainWindow.Dispose();
+                        //_mainWindow.Close();
                         _application.Dispose();
                         counter++;
                     }
