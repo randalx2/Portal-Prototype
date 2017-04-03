@@ -1,1 +1,5 @@
-﻿
+﻿1>------ Build started: Project: Portal-Prototype, Configuration: Debug Any CPU ------
+1>C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\Form1.cs(92,43,92,44): warning CS0168: The variable 'e' is declared but never used
+1>C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\Form1.cs(107,44,107,45): warning CS0168: The variable 'e' is declared but never used
+1>  Portal-Prototype -> C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

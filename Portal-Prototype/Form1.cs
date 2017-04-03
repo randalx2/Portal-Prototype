@@ -51,8 +51,14 @@ namespace Portal_Prototype
         //TestStack.White Objects
         TestStack.White.Application _application;
 
-        //TestStack.White.UIItems.WindowItems.Window _mainWindow;
+        //Selenium Web Driver Objects for each browser
+        /*IWebDriver driverFF = new FirefoxDriver();
+        IWebDriver driverChrome = new ChromeDriver();
+        IWebDriver driverIE = new InternetExplorerDriver();*/
 
+        //NB The Browser automatically opens up upon declaring the driver
+
+        //TestStack.White.UIItems.WindowItems.Window _mainWindow;
         string sSelectedFolder;
    
         public string GetProcessPath(string name)
@@ -74,6 +80,57 @@ namespace Portal_Prototype
             InitializeComponent();
         }
 
+        //My Custom Functions for use with Selenium WebDriver
+        //Method used to check if element exists
+        private bool isElementPresent(By by, IWebDriver driver)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException e)
+            {
+                //MessageBox.Show(e.Message + "\n Could not find required element");
+                return false;
+            }
+        }
+
+
+        private bool IsAlertShown(IWebDriver driver)
+        {
+            try
+            {
+                driver.SwitchTo().Alert();
+                return true;
+            }
+            catch (NoAlertPresentException e)
+            {
+                //MessageBox.Show(e.Message);
+                return false;
+            }
+        }
+
+
+
+        private void WaitForPageLoad(IWebDriver driver)
+        {
+            IWebElement page = null;
+            if (page != null)
+            {
+                var waitForCurrentPageToStale = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+                waitForCurrentPageToStale.Until(ExpectedConditions.StalenessOf(page));
+            }
+
+            var waitForDocumentReady = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            waitForDocumentReady.Until((wdriver) => (driver as IJavaScriptExecutor).ExecuteScript("return document.readyState").Equals("complete"));
+
+            page = driver.FindElement(By.TagName("html"));
+
+        }
+
+
+        //Method to remove duplicates from a listbox
         private void RemoveDuplicates(ListBox lb)
         {
             //method to remove duplicates from a list
@@ -90,8 +147,11 @@ namespace Portal_Prototype
             }
         }
 
+        //Method called upon form loading
         private void Form1_Load(object sender, EventArgs e)
         {
+            //=========================FORM LOAD Functions here============================================//
+
             string line = "";
             int counter = 0;
 
@@ -178,6 +238,9 @@ namespace Portal_Prototype
 
         private void button3_Click(object sender, EventArgs e)
         {
+            //==============SHOW APPS CURRENTLY OPENED============================================//
+            //**************************************************************************************//
+
             listBox1.Items.Clear();  //Clear the previous items on the form list
             listBox2.Items.Clear();
             listBox3.Items.Clear();
@@ -206,8 +269,8 @@ namespace Portal_Prototype
                         //Store the executable paths in a list
 
                         exePaths.Add(@process.MainModule.FileName);
-                        //appNames.Add(process.ProcessName);
-                        appNames.Add(process.MainWindowTitle);
+                        appNames.Add(process.ProcessName);
+                        //appNames.Add(process.MainWindowTitle);
                         appIDs.Add(process.Id);
 
                         //Clear the list of duplicates ====figure out how to eliminate duplicates
@@ -251,6 +314,8 @@ namespace Portal_Prototype
 
         private void btnFilePath_Click(object sender, EventArgs e)
         {
+            //=================USE FOLDER DIALOGUES TO SET THE SAVE PATH FOR THE TEXT FILES =====================================//
+
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             //fbd.Description = "Custom Description"; //not mandatory
 
@@ -276,21 +341,7 @@ namespace Portal_Prototype
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //Clear the listboxes and reset the list objects
-            listBox1.Items.Clear();  //Clear the previous items on the form list
-            listBox2.Items.Clear();
-            listBox3.Items.Clear();
-
-            exePaths.Clear();        //Clear the previous items on the paths list object
-            appNames.Clear();
-            appIDs.Clear();
-
-            lblListOfApps.Text = "Apps Currently Opened";
-
-
-            Process[] processlist = Process.GetProcesses(); //Array to hold the Process ID'
-
-            //******************RESTORE APPS HERE*************************//
+            //******************RESTORE APPS HERE***************************************************************************//
             //====First attempt to open each app, then the associated file / browser page that was opened within that app==//
             //=============================================================================================================//
 
@@ -314,6 +365,33 @@ namespace Portal_Prototype
                     //Just increment the loop counter here as we don't want to open up another instance of Portal
                     counter++;
                 }
+                else if(line == @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe")
+                {
+                    //What if Firefox was opened ==> Use Selenium to launch it
+                    IWebDriver driver = new FirefoxDriver();
+
+                    //=========CODE FOR FIREFOX MANIPULATION UPON STARTUP HERE ========================== //
+
+                    counter++;
+                }
+                else if(line == @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
+                {
+                    //What if Chrome was opened ==> Use Selenium to launch it
+                    IWebDriver driver = new ChromeDriver();
+
+                    //========= CODE FOR CHROME MANIPULATION UPON STARTUP HERE ===========================//
+
+                    counter++;
+                }
+                else if(line == @"C:\Program Files\Internet Explorer\iexplore.exe")
+                {
+                    //What if IE was opened ==> Use Selenium to launch it
+                    IWebDriver driver = new InternetExplorerDriver();
+
+                    //========= CODE FOR IE MANIPULATION UPON START UP HERE ==============================//
+
+                    counter++;
+                }
                 else
                 {
                     //Console.WriteLine(line);
@@ -323,61 +401,8 @@ namespace Portal_Prototype
                 
             }
 
-            //Restore the listboxes accordingly
-            foreach (Process process in processlist)
-            {
-                if (!String.IsNullOrEmpty(process.MainWindowTitle)) //only check for the ones with open windows
-                {
-                    //Console.WriteLine("Process: {0} ID: {1} Window title: {2}", process.ProcessName, process.Id, process.MainWindowTitle);
-
-                    try
-                    {
-                        //Console.WriteLine("Process Path: " + process.MainModule.FileName);
-
-                        //Store the executable paths in a list
-
-                        exePaths.Add(@process.MainModule.FileName);
-                        //appNames.Add(process.ProcessName);
-                        appNames.Add(process.MainWindowTitle);
-                        appIDs.Add(process.Id);
-
-                        //Clear the list of duplicates ====figure out how to eliminate duplicates
-                        //var paths = exePaths.Distinct();
-
-
-
-                        //Display the list of open apps in the list box
-                        foreach (string path in exePaths)
-                        {
-                            listBox1.Items.Add(path);
-                            //listBox1.Items.Add(process.MainWindowTitle + "   Path: " + path);
-                        }
-
-                        foreach (int id in appIDs)
-                        {
-                            listBox3.Items.Add(id);
-                        }
-
-                        foreach (string name in appNames)
-                        {
-                            listBox2.Items.Add(name);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //Console.WriteLine("n/a");
-                        listBox1.Items.Add("N/A");
-                        listBox3.Items.Add("N/A");
-                        listBox2.Items.Add("N/A");
-                        MessageBox.Show(ex.Message + "\n No Such App or process ID opened");
-                    }
-
-                }
-            }
-
-            RemoveDuplicates(listBox1);
-            RemoveDuplicates(listBox2);
-            RemoveDuplicates(listBox3);
+            //Use the Show Open Apps Button
+            button3.PerformClick();
 
             //Release the File Resource Asset
             file.Close();
@@ -389,7 +414,9 @@ namespace Portal_Prototype
             //******************CLOSE ALL APPS HERE*************************//
             //===Use the AutoApp Object to close all open apps================//
             //===== NB Using TestStack to shut down browsers causes them to give a crash error message upon starting again ie they weren't closed properly======//
-            //==============================================================================================================//
+            //===== Try to resolve this we cannot use Selenium to shut them down as this requires the creation of new selenium browser objects =================//
+            //==================================================================================================================================================//
+
             int counter = 0;
             string name = "";
             try
@@ -400,26 +427,30 @@ namespace Portal_Prototype
                     //MessageBox.Show("ID: " + id + "\n Window Name: " + name);
 
                     _application = TestStack.White.Application.Attach(id);
-                    //_mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache);
-                    ++counter;
-
+                    //_mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache); ==>requires main window title to work
+                    
                     //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
                     //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
 
-                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)"
-                        || name == "Portal-Prototype (Running) - Microsoft Visual Studio" || name == "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")
+                    /*if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)"
+                        || name == "Portal-Prototype (Running) - Microsoft Visual Studio" || name == "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")*/
+                    if(name == "Portal-Prototype" || name == "devenv")
                     {
-                        continue;
+                        counter++;
+                        //continue;
                     }
                     else
                     {
                         //Enter saving application specific info here before closing instances of the app
                         //Also check if any browsers where open and try using Selenium instead to close them.
 
+                        //May be better to use the close() for the browsers
                         _application.Dispose();
+                        counter++;
                     }
-                    
+
                 }
+
             }
             catch(Exception ex)
             {
