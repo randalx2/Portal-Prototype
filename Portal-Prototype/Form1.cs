@@ -292,7 +292,8 @@ namespace Portal_Prototype
                     //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
                     //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
 
-                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)")
+                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)"
+                        || name == "Portal-Prototype (Running) - Microsoft Visual Studio" || name == "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")
                     {
                         continue;
                     }
