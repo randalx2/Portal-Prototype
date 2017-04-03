@@ -1,9 +1,2 @@
-C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\chromedriver.exe
-C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe
-C:\Program Files (x86)\Microsoft Office\root\Office16\WINWORD.EXE
-C:\Program Files (x86)\Microsoft Office\root\Office16\POWERPNT.EXE
-C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-C:\Windows\system32\NOTEPAD.EXE
-C:\Program Files (x86)\Mozilla Firefox\Firefox.exe
-C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\geckodriver.exe
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe
+C:\Users\Praneel\Documents\Visual Studio 2015\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.vshost.exe

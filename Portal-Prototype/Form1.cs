@@ -403,7 +403,7 @@ namespace Portal_Prototype
                 
             }
 
-            //Use the Show Open Apps Button
+            //Use the Show Open Apps Button to show all the apps currently opened BY Portal
             button3.PerformClick();
 
             //Release the File Resource Asset
@@ -436,7 +436,7 @@ namespace Portal_Prototype
 
                     /*if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)"
                         || name == "Portal-Prototype (Running) - Microsoft Visual Studio" || name == "Portal-Prototype (Running) - Microsoft Visual Studio (Administrator)")*/
-                    if(name == "Portal-Prototype" || name == "devenv")
+                    if(name == "Portal-Prototype" || name == "devenv" || name == "Portal-Prototype.vshost")
                     {
                         counter++;
                         //continue;
