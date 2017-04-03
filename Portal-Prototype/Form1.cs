@@ -360,9 +360,11 @@ namespace Portal_Prototype
             System.IO.StreamReader file = new System.IO.StreamReader(@txtFilePath.Text + @"\exePaths.txt");
             while ((line = file.ReadLine()) != null)
             {
-                if (line == @"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe")
+                if (line == @"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe"
+                    || line == @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe")
                 {
-                    //Just increment the loop counter here as we don't want to open up another instance of Portal
+                    //NB REMOVE EXCLUSION OF VISUAL STUDIO BEFORE THE FINAL BUILD!!
+                    //Just increment the loop counter here as we don't want to open up another instance of Portal or VS
                     counter++;
                 }
                 else if(line == @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe")
