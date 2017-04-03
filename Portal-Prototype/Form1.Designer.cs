@@ -41,6 +41,7 @@
             this.lblAppsClose = new System.Windows.Forms.Label();
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.lblProcID = new System.Windows.Forms.Label();
+            this.listBox4 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lblListOfApps
@@ -57,7 +58,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(15, 34);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(662, 264);
+            this.listBox1.Size = new System.Drawing.Size(414, 264);
             this.listBox1.TabIndex = 1;
             // 
             // button1
@@ -132,9 +133,9 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(706, 34);
+            this.listBox2.Location = new System.Drawing.Point(457, 34);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(514, 264);
+            this.listBox2.Size = new System.Drawing.Size(373, 264);
             this.listBox2.TabIndex = 9;
             // 
             // lblAppsClose
@@ -162,11 +163,20 @@
             this.lblProcID.TabIndex = 12;
             this.lblProcID.Text = "Current Application Process IDs";
             // 
+            // listBox4
+            // 
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.Location = new System.Drawing.Point(855, 34);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(373, 264);
+            this.listBox4.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 485);
+            this.Controls.Add(this.listBox4);
             this.Controls.Add(this.lblProcID);
             this.Controls.Add(this.listBox3);
             this.Controls.Add(this.lblAppsClose);
@@ -205,6 +215,7 @@
         private System.Windows.Forms.Label lblAppsClose;
         private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Label lblProcID;
+        private System.Windows.Forms.ListBox listBox4;
     }
 }
 
