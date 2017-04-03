@@ -46,19 +46,14 @@ namespace Portal_Prototype
         //string path = "";
         List<string> exePaths = new List<string>();  // List vector to store exe paths
         List<string> appNames = new List<string>();
+        List<string> windowNames = new List<string>();
         List<int> appIDs = new List<int>();  //Hold the app IDs
 
         //TestStack.White Objects
-        TestStack.White.Application _application;
+        TestStack.White.Application _application = null;
+        TestStack.White.UIItems.WindowItems.Window _mainWindow = null;
 
-        //Selenium Web Driver Objects for each browser
-        /*IWebDriver driverFF = new FirefoxDriver();
-        IWebDriver driverChrome = new ChromeDriver();
-        IWebDriver driverIE = new InternetExplorerDriver();*/
-
-        //NB The Browser automatically opens up upon declaring the driver
-
-        //TestStack.White.UIItems.WindowItems.Window _mainWindow;
+        //String to hold selected save folder path
         string sSelectedFolder;
    
         public string GetProcessPath(string name)
@@ -157,7 +152,7 @@ namespace Portal_Prototype
 
             //Upon Form load show previously loaded applications
             lblListOfApps.Text = "Previously Loaded Apps";
-            lblAppsClose.Text = "Current Application Names";
+            lblAppsClose.Text = "Current Application Window Names";
 
             //Read the text file one line at a time
             // Read the file and display it line by line.  
@@ -270,7 +265,7 @@ namespace Portal_Prototype
 
                         exePaths.Add(@process.MainModule.FileName);
                         appNames.Add(process.ProcessName);
-                        //appNames.Add(process.MainWindowTitle);
+                        windowNames.Add(process.MainWindowTitle);
                         appIDs.Add(process.Id);
 
                         //Clear the list of duplicates ====figure out how to eliminate duplicates
@@ -294,6 +289,11 @@ namespace Portal_Prototype
                         {
                             listBox2.Items.Add(name);
                         }
+
+                        foreach(string window in windowNames)
+                        {
+                            listBox4.Items.Add(window);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -301,6 +301,7 @@ namespace Portal_Prototype
                         listBox1.Items.Add("N/A");
                         listBox3.Items.Add("N/A");
                         listBox2.Items.Add("N/A");
+                        listBox4.Items.Add("N/A");
                         MessageBox.Show(ex.Message + "\n No Such App or process ID opened");
                     }
 
@@ -310,6 +311,7 @@ namespace Portal_Prototype
             RemoveDuplicates(listBox1);
             RemoveDuplicates(listBox2);
             RemoveDuplicates(listBox3);
+            RemoveDuplicates(listBox4);
         }
 
         private void btnFilePath_Click(object sender, EventArgs e)
@@ -361,7 +363,8 @@ namespace Portal_Prototype
             while ((line = file.ReadLine()) != null)
             {
                 if (line == @"C:\Users\Name\Documents\Visual Studio 2017\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.exe"
-                    || line == @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe")
+                    || line == @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe"
+                    || line == @"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe")
                 {
                     //NB REMOVE EXCLUSION OF VISUAL STUDIO BEFORE THE FINAL BUILD!!
                     //Just increment the loop counter here as we don't want to open up another instance of Portal or VS
@@ -370,7 +373,11 @@ namespace Portal_Prototype
                 else if(line == @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe")
                 {
                     //What if Firefox was opened ==> Use Selenium to launch it
-                    IWebDriver driver = new FirefoxDriver();
+                    //Also hide the command prompt windows from the drivers
+
+                    var driverService = FirefoxDriverService.CreateDefaultService();
+                    driverService.HideCommandPromptWindow = true;
+                    IWebDriver driver = new FirefoxDriver(driverService);
 
                     //=========CODE FOR FIREFOX MANIPULATION UPON STARTUP HERE ========================== //
 
@@ -379,16 +386,35 @@ namespace Portal_Prototype
                 else if(line == @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
                 {
                     //What if Chrome was opened ==> Use Selenium to launch it
-                    IWebDriver driver = new ChromeDriver();
+
+                    var driverService = ChromeDriverService.CreateDefaultService();
+                    driverService.HideCommandPromptWindow = true;
+                    IWebDriver driver = new ChromeDriver(driverService);
 
                     //========= CODE FOR CHROME MANIPULATION UPON STARTUP HERE ===========================//
 
                     counter++;
                 }
-                else if(line == @"C:\Program Files\Internet Explorer\iexplore.exe")
+                else if(line == @"C:\Program Files\Internet Explorer\iexplore.exe" || line == @"C:\Program Files (x86)\Internet Explorer\iexplore.exe")
                 {
                     //What if IE was opened ==> Use Selenium to launch it
-                    IWebDriver driver = new InternetExplorerDriver();
+
+                    //For IE We need to check if Protected Mode was enables first
+                    try
+                    {
+                        var driverService = InternetExplorerDriverService.CreateDefaultService();
+                        driverService.HideCommandPromptWindow = true;
+
+                        IWebDriver driver = new InternetExplorerDriver(driverService);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + "\n" + "\n Protected Mode is Enabled in all zones for Internet Explorer! To enable automation please disable protected mode in IE"
+                            + "\nIn IE, from the Tools menu (or the gear icon in the toolbar in later versions), select \"Internet options\" Go to the Security tab. At the bottom of the dialog for each zone, you should see a check box labeled \"Enable Protected Mode.\" Set the value of the check box to the same value, either checked or unchecked, for each zone.");
+                    }
+
+                    
+                    
 
                     //========= CODE FOR IE MANIPULATION UPON START UP HERE ==============================//
 
@@ -419,17 +445,21 @@ namespace Portal_Prototype
             //===== Try to resolve this we cannot use Selenium to shut them down as this requires the creation of new selenium browser objects =================//
             //==================================================================================================================================================//
 
+            //=============ALSO MAKE ALLOWANCE IF THE USER HAD ALREADY MANUALLY CLOSED SOME APPS =======================================================//
+
             int counter = 0;
             string name = "";
+            string windowTitle = "";
             try
             {
                 foreach (int id in listBox3.Items)
                 {
                     name = listBox2.Items[counter].ToString();
+                    windowTitle = listBox4.Items[counter].ToString();
                     //MessageBox.Show("ID: " + id + "\n Window Name: " + name);
 
                     _application = TestStack.White.Application.Attach(id);
-                    //_mainWindow = _application.GetWindow(SearchCriteria.ByText(name), InitializeOption.NoCache); ==>requires main window title to work
+                    _mainWindow = _application.GetWindow(SearchCriteria.ByText(windowTitle), InitializeOption.NoCache);
                     
                     //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
                     //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
@@ -447,6 +477,10 @@ namespace Portal_Prototype
                         //Also check if any browsers where open and try using Selenium instead to close them.
 
                         //May be better to use the close() for the browsers
+
+                        //To safely close an app try closing the window first
+
+                        _mainWindow.Dispose();
                         _application.Dispose();
                         counter++;
                     }
@@ -456,14 +490,15 @@ namespace Portal_Prototype
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n Application may have been closed manually by user or window not visible");
             }
 
             //Clear the listboxes
             //NB Abstraction ==>  This is irrelevant to the user but clear the list once this button is pressed
             listBox1.Items.Clear();
             listBox2.Items.Clear();
-            listBox3.Items.Clear();     
+            listBox3.Items.Clear();
+            listBox4.Items.Clear();     
         }
     }
 }

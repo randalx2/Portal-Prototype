@@ -42,6 +42,7 @@
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.lblProcID = new System.Windows.Forms.Label();
             this.listBox4 = new System.Windows.Forms.ListBox();
+            this.lblAppNames = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblListOfApps
@@ -171,11 +172,21 @@
             this.listBox4.Size = new System.Drawing.Size(373, 264);
             this.listBox4.TabIndex = 13;
             // 
+            // lblAppNames
+            // 
+            this.lblAppNames.AutoSize = true;
+            this.lblAppNames.Location = new System.Drawing.Point(454, 9);
+            this.lblAppNames.Name = "lblAppNames";
+            this.lblAppNames.Size = new System.Drawing.Size(136, 13);
+            this.lblAppNames.TabIndex = 14;
+            this.lblAppNames.Text = "Application Process Names";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1450, 485);
+            this.Controls.Add(this.lblAppNames);
             this.Controls.Add(this.listBox4);
             this.Controls.Add(this.lblProcID);
             this.Controls.Add(this.listBox3);
@@ -216,6 +227,7 @@
         private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Label lblProcID;
         private System.Windows.Forms.ListBox listBox4;
+        private System.Windows.Forms.Label lblAppNames;
     }
 }
 

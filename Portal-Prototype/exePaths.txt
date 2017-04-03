@@ -1,2 +1,4 @@
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe
 C:\Users\Praneel\Documents\Visual Studio 2015\Projects\Portal-Prototype\Portal-Prototype\bin\Debug\Portal-Prototype.vshost.exe
+C:\Program Files (x86)\Mozilla Firefox\firefox.exe
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe
+C:\Program Files (x86)\Microsoft Office\Office15\WINWORD.EXE
