@@ -292,12 +292,14 @@ namespace Portal_Prototype
                     //NB FOR BEST RESULTS RUN WITHOUT DEBUGGING
                     //NB If Running as admin please change "Portal-Prototype - Microsoft Visual Studio" to "Portal-Prototype - Microsoft Visual Studio (Administrator)"
 
-                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio")
+                    if (name == "Form1" || name == "Portal-Prototype - Microsoft Visual Studio" || name == "Portal-Prototype - Microsoft Visual Studio (Administrator)")
                     {
                         continue;
                     }
                     else
                     {
+                        //Enter saving application specific info here before closing instances of the app
+
                         _application.Dispose();
                     }
                     
