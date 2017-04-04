@@ -406,18 +406,17 @@ namespace Portal_Prototype
                         driverService.HideCommandPromptWindow = true;
 
                         IWebDriver driver = new InternetExplorerDriver(driverService);
+
+                        //========= CODE FOR IE MANIPULATION UPON START UP HERE ==============================//
+
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message + "\n" + "\n Protected Mode is Enabled in all zones for Internet Explorer! To enable automation please disable protected mode in IE"
-                            + "\nIn IE, from the Tools menu (or the gear icon in the toolbar in later versions), select \"Internet options\" Go to the Security tab. At the bottom of the dialog for each zone, you should see a check box labeled \"Enable Protected Mode.\" Set the value of the check box to the same value, either checked or unchecked, for each zone.");
+                            + "\nIn IE, from the Tools menu (or the gear icon in the toolbar in later versions), select \"Internet options\" Go to the Security tab. \nAt the bottom of the dialog for each zone, you should see a check box labeled \"Enable Protected Mode.\" \nSet the value of the check box to the same value, either checked or unchecked, for each zone.");
                     }
 
                     
-                    
-
-                    //========= CODE FOR IE MANIPULATION UPON START UP HERE ==============================//
-
                     counter++;
                 }
                 else
